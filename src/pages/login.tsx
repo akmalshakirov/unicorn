@@ -1,7 +1,56 @@
+import axios, { isAxiosError } from "axios";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import Toast from "../utils/toast";
+
 const LoginPage = () => {
+    const [data, setData] = useState<{
+        login: string;
+        password: string;
+        rememberMe: boolean;
+    }>({
+        login: "",
+        password: "",
+        rememberMe: false,
+    });
+
+    const navigate = useNavigate();
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post("http://localhost:4000/login", {
+                username: data.login,
+                password: data.password,
+                rememberMe: data.rememberMe,
+            });
+
+            Toast({ content: response.data.message, variant: "success" });
+
+            localStorage.setItem("access-token", response.data.token);
+            navigate("/");
+        } catch (error) {
+            if (isAxiosError(error)) {
+                Toast({
+                    content: error.response?.data.error || error.message,
+                    variant: "error",
+                });
+            }
+            console.log(error);
+        }
+    };
+
     return (
         <div className='flex items-center justify-center bg-[url(/login-bg.png)] min-h-screen h-full bg-no-repeat bg-cover bg-center relative after:absolute after:bg-black/50 after:w-full after:h-full after:-z-1 z-0 p-3'>
-            <form className='bg-[#2d2f35de] backdrop-blur-lg rounded-[20px] py-7 md:py-13 max-w-lg w-full'>
+            <form
+                className='bg-[#2d2f35de] backdrop-blur-lg rounded-[20px] py-7 2xl:py-13 max-w-sm md:max-w-md 2xl:max-w-lg w-full'
+                onSubmit={handleSubmit}>
                 <div className='mb-5'>
                     <img src='/logo.png' alt='logo' className='mx-auto' />
                 </div>
@@ -40,13 +89,16 @@ const LoginPage = () => {
                         </span>
                         <input
                             type='text'
-                            className='rounded-[20px] p-2.5 bg-[#3c3e47] pl-10 outline-none focus:ring-2 focus:ring-[#9B74F0] transition'
+                            className='rounded-[20px] p-2.5 bg-[#3c3e47] focus:bg-[#4b4c54] pl-10 outline-none focus:ring-2 focus:ring-[#9B74F0] transition'
                             placeholder='Javlon'
                             title='Enter your login'
                             aria-label='Enter your login'
                             name='login'
                             required
                             autoComplete='username'
+                            value={data.login}
+                            onChange={handleChange}
+                            pattern='[^\s]+'
                         />
                     </label>
                     <label className='flex flex-col justify-center gap-2 relative'>
@@ -77,21 +129,30 @@ const LoginPage = () => {
                             </svg>
                         </span>
                         <input
-                            type='text'
-                            className='rounded-[20px] p-2.5 bg-[#3c3e47] pl-10 outline-none focus:ring-2 focus:ring-[#9B74F0] transition'
+                            type='password'
+                            className='rounded-[20px] p-2.5 bg-[#3c3e47] focus:bg-[#4b4c54] pl-10 outline-none focus:ring-2 focus:ring-[#9B74F0] transition'
                             placeholder='*******'
                             title='Enter your password'
                             aria-label='Enter your password'
                             name='password'
                             required
                             autoComplete='new-password'
+                            value={data.password}
+                            onChange={handleChange}
                         />
                     </label>
                     <label className='ml-2'>
                         <input
                             type='checkbox'
-                            name='remember'
+                            name='rememberMe'
                             className='mr-3'
+                            checked={data.rememberMe}
+                            onChange={(e) =>
+                                setData((prev) => ({
+                                    ...prev,
+                                    rememberMe: e.target.checked,
+                                }))
+                            }
                         />
                         Remember me
                     </label>
