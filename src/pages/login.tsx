@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../app";
 import Toast from "../utils/toast";
 
 const LoginPage = () => {
@@ -25,7 +26,7 @@ const LoginPage = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:4000/login", {
+            const response = await axios.post(`${API_URL}/login`, {
                 username: data.login,
                 password: data.password,
                 rememberMe: data.rememberMe,
