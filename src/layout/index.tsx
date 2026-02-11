@@ -1,6 +1,6 @@
 import type React from "react";
-import Header from "../components/ui/Header";
-import Sidebar from "../components/ui/Sidebar";
+import Header from "../components/screens/Header";
+import Sidebar from "../components/screens/Sidebar";
 
 type Props = {
     children: React.ReactNode;
@@ -11,7 +11,7 @@ const Layout = ({ children }: Props) => {
             <Sidebar />
             <div className='relative flex-1'>
                 <Header />
-                <main className='p-5 m-5 border'>{children}</main>
+                <main className='p-5 m-5'>{children}</main>
             </div>
         </div>
     );
