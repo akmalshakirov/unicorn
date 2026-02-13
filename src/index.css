@@ -15,3 +15,9 @@ html,
 body {
     scroll-behavior: smooth;
 }
+
+@theme {
+    --color-primary: #272a30;
+    --color-secondary: #343743;
+    --color-stroke: #9B74F0
+}

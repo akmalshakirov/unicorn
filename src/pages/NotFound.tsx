@@ -5,7 +5,7 @@ const NotFoundPage = () => {
     const navigate = useNavigate();
 
     return (
-        <div className='min-h-screen h-full flex items-center flex-col justify-center gap-3 bg-[#272A30]'>
+        <div className='min-h-screen h-full flex items-center flex-col justify-center gap-3 bg-primary'>
             <h1 className='font-bold text-4xl/snug'>Not found page!</h1>
             <button
                 className='rounded-xl bg-[#6b3bd3] px-2 py-3 cursor-pointer hover:bg-[#8051e6] active:translate-y-1 transition flex items-center'
