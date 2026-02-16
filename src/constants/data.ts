@@ -55,15 +55,15 @@ export const SIDEBAR_DATA = [
 
 export const MEMBERS_TABLE_COLUMNS = [
     {
-        key: "name",
+        key: "firstName",
         header: "Name",
     },
     {
-        key: "phoneNumber",
+        key: "phone",
         header: "Phone",
     },
     {
-        key: "status",
+        key: "company.department",
         header: "Status",
     },
     {

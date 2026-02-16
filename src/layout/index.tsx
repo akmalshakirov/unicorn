@@ -11,7 +11,7 @@ const Layout = ({ children }: Props) => {
             <Sidebar />
             <div className='relative flex-1'>
                 <Header />
-                <main className='p-5 m-5 flex-1 overflow-auto'>{children}</main>
+                <main className='p-7 flex-1'>{children}</main>
             </div>
         </div>
     );

@@ -1,9 +1,10 @@
 import { LogIn, SquarePen, Trash } from "lucide-react";
 import type { TableProps } from "../../types";
 
-const Table = ({ data, columns, actions }: TableProps) => {
+const Table = ({ data, columns, actions, maxHeight }: TableProps) => {
     return (
-        <div className='bg-secondary w-full rounded-3xl p-4 overflow-x-auto max-w-full'>
+        <div
+            className={`bg-secondary w-full rounded-3xl p-4 overflow-auto h-[${maxHeight}]`}>
             <table className='w-full'>
                 <thead>
                     <tr>
@@ -19,7 +20,7 @@ const Table = ({ data, columns, actions }: TableProps) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, rowIndex) => (
+                    {data?.map((item, rowIndex) => (
                         <tr key={item.id ?? rowIndex}>
                             {columns.map((col) => (
                                 <td

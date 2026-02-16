@@ -1,10 +1,13 @@
+import type { ChangeEvent } from "react";
+
 export type TableProps = {
-    data: MemberTableProps[];
+    data: MemberTableProps[] | undefined;
     columns: MemberTableColumns[];
     actions: MemberTableActions;
+    maxHeight?: string;
 };
 
-type MemberTableProps = {
+export type MemberTableProps = {
     id: number;
     name: string;
     phoneNumber: number;
@@ -23,4 +26,11 @@ type MemberTableActions = {
     info?: boolean;
     update?: boolean;
     delete?: boolean;
+};
+
+export type InputProps = {
+    placeholder?: string;
+    value?: string;
+    onChange?: (e: ChangeEvent) => void;
+    className?: string;
 };
