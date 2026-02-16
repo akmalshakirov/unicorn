@@ -52,3 +52,26 @@ export const SIDEBAR_DATA = [
         to: "/payments",
     },
 ];
+
+export const MEMBERS_TABLE_COLUMNS = [
+    {
+        key: "name",
+        header: "Name",
+    },
+    {
+        key: "phoneNumber",
+        header: "Phone",
+    },
+    {
+        key: "status",
+        header: "Status",
+    },
+    {
+        key: "type",
+        header: "Type",
+    },
+    {
+        key: "expireTime",
+        header: "Expire Time",
+    },
+];

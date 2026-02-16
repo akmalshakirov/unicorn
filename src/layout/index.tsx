@@ -7,11 +7,11 @@ type Props = {
 };
 const Layout = ({ children }: Props) => {
     return (
-        <div className='flex bg-primary min-h-screen'>
+        <div className='bg-primary flex min-h-screen'>
             <Sidebar />
             <div className='relative flex-1'>
                 <Header />
-                <main className='p-5 m-5'>{children}</main>
+                <main className='p-5 m-5 flex-1 overflow-auto'>{children}</main>
             </div>
         </div>
     );

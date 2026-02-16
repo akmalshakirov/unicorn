@@ -8,7 +8,10 @@ const Table = ({ data, columns, actions }: TableProps) => {
                 <thead>
                     <tr>
                         {columns.map((col, i) => (
-                            <th key={col.key ?? i} scope='col'>
+                            <th
+                                key={col.key ?? i}
+                                scope='col'
+                                className='text-nowrap'>
                                 {col.header}
                             </th>
                         ))}
@@ -26,7 +29,7 @@ const Table = ({ data, columns, actions }: TableProps) => {
                                 </td>
                             ))}
                             {actions && (
-                                <td className='text-center space-x-3'>
+                                <td className='text-center space-x-3 text-nowrap'>
                                     {actions.info && (
                                         <button className='*:stroke-stroke cursor-pointer'>
                                             <LogIn size={20} />

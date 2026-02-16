@@ -1,4 +1,5 @@
 import Table from "../../components/ui/Table";
+import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
 
 const UserMembers = () => {
     return (
@@ -35,28 +36,7 @@ const UserMembers = () => {
                     info: true,
                     update: true,
                 }}
-                columns={[
-                    {
-                        key: "name",
-                        header: "Name",
-                    },
-                    {
-                        key: "phoneNumber",
-                        header: "Phone",
-                    },
-                    {
-                        key: "status",
-                        header: "Status",
-                    },
-                    {
-                        key: "type",
-                        header: "Type",
-                    },
-                    {
-                        key: "expireTime",
-                        header: "Expire Time",
-                    },
-                ]}
+                columns={MEMBERS_TABLE_COLUMNS}
             />
         </div>
     );
