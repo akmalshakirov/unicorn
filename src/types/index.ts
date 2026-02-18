@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, HTMLInputAutoCompleteAttribute } from "react";
 
 export type TableProps = {
     data: MemberTableProps[] | undefined;
@@ -29,8 +29,11 @@ type MemberTableActions = {
 };
 
 export type InputProps = {
+    name: string;
     placeholder?: string;
-    value?: string;
-    onChange?: (e: ChangeEvent) => void;
+    value: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     className?: string;
+    autoFocus?: boolean;
+    autoComplete?: HTMLInputAutoCompleteAttribute;
 };

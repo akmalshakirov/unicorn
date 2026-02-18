@@ -3,6 +3,7 @@ import { getMembers } from "./members.api";
 import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
 import Table from "../../components/ui/Table";
 import Input from "../../components/ui/Input";
+import { useState } from "react";
 
 // [
 //     {
@@ -38,13 +39,20 @@ const UserMembers = () => {
         staleTime: 1000 * 60 * 2,
     });
 
-    if (isLoading) return <h2>Loading members...</h2>;
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
+    if (isLoading) return <h2>Loading members...</h2>;
     if (isError) return <pre>Error with: {error.message}</pre>;
 
     return (
-        <div className='overflow-auto max-w-full'>
-            <Input />
+        <div className='overflow-auto max-w-full p-1'>
+            <div className='mb-7'>
+                <Input
+                    name='query'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
             <Table
                 data={data}
                 actions={{
