@@ -1,4 +1,8 @@
-import type { ChangeEvent, HTMLInputAutoCompleteAttribute } from "react";
+import type {
+    ChangeEvent,
+    HTMLInputAutoCompleteAttribute,
+    ReactNode,
+} from "react";
 
 export type TableProps = {
     data: MemberTableProps[] | undefined;
@@ -36,4 +40,5 @@ export type InputProps = {
     className?: string;
     autoFocus?: boolean;
     autoComplete?: HTMLInputAutoCompleteAttribute;
+    leftIcon?: boolean | ReactNode;
 };

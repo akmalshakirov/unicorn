@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMembers } from "./members.api";
-import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
-import Table from "../../components/ui/Table";
-import Input from "../../components/ui/Input";
 import { useState } from "react";
+import Input from "../../components/ui/Input";
+import Table from "../../components/ui/Table";
+import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
+import { getMembers } from "./members.api";
 
 // [
 //     {
@@ -42,7 +42,12 @@ const UserMembers = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     if (isLoading) return <h2>Loading members...</h2>;
-    if (isError) return <pre>Error with: {error.message}</pre>;
+    if (isError)
+        return (
+            <pre>
+                Error: <b>{error.message}</b>
+            </pre>
+        );
 
     return (
         <div className='overflow-auto max-w-full p-1'>
@@ -51,6 +56,8 @@ const UserMembers = () => {
                     name='query'
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder='Search Members'
+                    leftIcon
                 />
             </div>
             <Table
