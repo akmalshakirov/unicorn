@@ -58,6 +58,7 @@ const UserMembers = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder='Search Members'
                     leftIcon
+                    inputClassName='focus:bg-stroke/5'
                 />
             </div>
             <Table

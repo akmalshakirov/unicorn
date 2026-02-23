@@ -1,8 +1,5 @@
-import type {
-    ChangeEvent,
-    HTMLInputAutoCompleteAttribute,
-    ReactNode,
-} from "react";
+import type { ChangeEvent, ReactElement } from "react";
+import React from "react";
 
 export type TableProps = {
     data: MemberTableProps[] | undefined;
@@ -32,13 +29,29 @@ type MemberTableActions = {
     delete?: boolean;
 };
 
-export type InputProps = {
+// export type InputProps = {
+//     name: string;
+//     placeholder?: string;
+//     value: string;
+//     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+//     className?: string;
+//     inputClassName?: string;
+//     autoFocus?: boolean;
+//     autoComplete?: HTMLInputAutoCompleteAttribute;
+//     leftIcon?: boolean | ReactNode;
+// };
+
+// types/index.ts
+
+export type InputProps = Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "onChange"
+> & {
     name: string;
-    placeholder?: string;
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     className?: string;
-    autoFocus?: boolean;
-    autoComplete?: HTMLInputAutoCompleteAttribute;
-    leftIcon?: boolean | ReactNode;
+    inputClassName?: string;
+    leftIcon?: boolean | ReactElement;
+    label?: string;
 };

@@ -2,6 +2,7 @@ import axios, { isAxiosError } from "axios";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../app";
+import Input from "../components/ui/Input";
 import Toast from "../utils/toast";
 
 const LoginPage = () => {
@@ -61,10 +62,19 @@ const LoginPage = () => {
                 </h2>
 
                 <div className='px-10 md:px-15 space-y-10'>
-                    <label className='flex flex-col justify-center gap-2 relative'>
-                        Login:
-                        <span className='absolute top-[53.5%] left-[7px] pointer-events-none'>
-                            {/* <img src='/login-icon.svg' alt='Login icon' /> */}
+                    <Input
+                        required
+                        autoFocus
+                        label='Login:'
+                        title='Enter your login'
+                        aria-label='Enter your login'
+                        name='login'
+                        placeholder='Javlon'
+                        value={data.login}
+                        onChange={handleChange}
+                        inputClassName='bg-[#3c3e47] focus:bg-[#4b4c54] w-full'
+                        className='mb-5'
+                        leftIcon={
                             <svg
                                 width='24'
                                 height='24'
@@ -87,25 +97,19 @@ const LoginPage = () => {
                                     </clipPath>
                                 </defs>
                             </svg>
-                        </span>
-                        <input
-                            type='text'
-                            className='rounded-[20px] p-2.5 bg-[#3c3e47] focus:bg-[#4b4c54] pl-10 outline-none focus:ring-2 focus:ring-[#9B74F0] transition'
-                            placeholder='Javlon'
-                            title='Enter your login'
-                            aria-label='Enter your login'
-                            name='login'
-                            required
-                            autoComplete='username'
-                            value={data.login}
-                            onChange={handleChange}
-                            pattern='[^\s]+'
-                        />
-                    </label>
-                    <label className='flex flex-col justify-center gap-2 relative'>
-                        Password:
-                        <span className='absolute top-[53.5%] left-[7px] pointer-events-none'>
-                            {/* <img src='/password-icon.svg' alt='Password icon' /> */}
+                        }
+                    />
+                    <Input
+                        required
+                        type='password'
+                        label='Password:'
+                        name='password'
+                        value={data.password}
+                        onChange={handleChange}
+                        inputClassName='bg-[#3c3e47] focus:bg-[#4b4c54] w-full'
+                        placeholder='********'
+                        className='mb-5'
+                        leftIcon={
                             <svg
                                 width='24'
                                 height='24'
@@ -128,20 +132,8 @@ const LoginPage = () => {
                                     </clipPath>
                                 </defs>
                             </svg>
-                        </span>
-                        <input
-                            type='password'
-                            className='rounded-[20px] p-2.5 bg-[#3c3e47] focus:bg-[#4b4c54] pl-10 outline-none focus:ring-2 focus:ring-[#9B74F0] transition'
-                            placeholder='*******'
-                            title='Enter your password'
-                            aria-label='Enter your password'
-                            name='password'
-                            required
-                            autoComplete='new-password'
-                            value={data.password}
-                            onChange={handleChange}
-                        />
-                    </label>
+                        }
+                    />
                     <label className='ml-2'>
                         <input
                             type='checkbox'
@@ -157,7 +149,7 @@ const LoginPage = () => {
                         />
                         Remember me
                     </label>
-                    <button className='w-full bg-[#9B74F0] hover:bg-[#7c50db] transition mt-4 rounded-[20px] py-2 cursor-pointer active:translate-y-1'>
+                    <button className='w-full bg-stroke hover:bg-[#7c50db] transition mt-4 rounded-[20px] py-2 cursor-pointer active:translate-y-1'>
                         Login
                     </button>
                 </div>
