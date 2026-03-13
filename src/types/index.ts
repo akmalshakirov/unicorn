@@ -1,4 +1,4 @@
-import type { ChangeEvent, ReactElement } from "react";
+import type { ChangeEvent, ReactElement, ReactNode } from "react";
 import React from "react";
 
 export type TableProps = {
@@ -29,19 +29,15 @@ type MemberTableActions = {
     delete?: boolean;
 };
 
-// export type InputProps = {
-//     name: string;
-//     placeholder?: string;
-//     value: string;
-//     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-//     className?: string;
-//     inputClassName?: string;
-//     autoFocus?: boolean;
-//     autoComplete?: HTMLInputAutoCompleteAttribute;
-//     leftIcon?: boolean | ReactNode;
-// };
-
-// types/index.ts
+export type ModalProps = {
+    title?: string;
+    open: boolean;
+    onClose: () => void;
+    children: React.ReactNode;
+    footerChildren?: ReactNode;
+    clickOutsideClose?: boolean;
+    showDefaultFooter?: boolean;
+};
 
 export type InputProps = Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -54,4 +50,11 @@ export type InputProps = Omit<
     inputClassName?: string;
     leftIcon?: boolean | ReactElement;
     label?: string;
+};
+
+export type MemberDataProps = {
+    name: string;
+    date: string;
+    phoneNumber: string;
+    gender: "male" | "female";
 };

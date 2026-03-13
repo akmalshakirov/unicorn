@@ -18,7 +18,7 @@ const Sidebar = () => {
                         <img
                             src='/sidebar-logo.png'
                             alt='Sidebar logo'
-                            className='mx-auto'
+                            className='mx-auto outline-none'
                         />
                     </NavLink>
                 </div>
@@ -28,7 +28,7 @@ const Sidebar = () => {
                             key={s.id}
                             to={s.to}
                             className={({ isActive }) =>
-                                `outline-none px-2 pl-3 py-3 rounded-2xl flex items-center transition font-bold gap-2 ${isActive ? "bg-stroke" : "hover:bg-gray-400/20 focus:bg-gray-400/25 focus:ring-2 focus:ring-[#70737f]"}`
+                                `outline-none px-2 pl-3 py-3 rounded-2xl flex items-center transition font-bold gap-2 ${isActive ? "bg-stroke" : "hover:bg-gray-400/20 focus-within:bg-gray-400/25 focus-within:ring-2 focus-within:ring-[#70737f]"}`
                             }>
                             <span>{<s.icon />}</span>
                             <span>{s.label}</span>
@@ -37,7 +37,7 @@ const Sidebar = () => {
                 </div>
             </div>
             <button
-                className='px-2 pl-3 py-3 rounded-2xl flex w-full cursor-pointer items-center transition font-bold gap-2 outline-none hover:bg-red-500/50 focus:bg-gray-400/25 focus:ring-2 focus:ring-[#70737f]'
+                className='px-2 pl-3 py-3 rounded-2xl flex w-full cursor-pointer items-center transition font-bold gap-2 outline-none hover:bg-red-600/70 focus-within:bg-red-500/30 focus-within:ring-2 focus-within:ring-red-500!'
                 onClick={handleLogOut}>
                 <span>{<LogOutIcon />}</span>
                 Logout
