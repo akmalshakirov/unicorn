@@ -6,8 +6,8 @@ import Modal from "../../components/ui/Modal";
 import Table from "../../components/ui/Table";
 import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
 import type { MemberDataProps } from "../../types";
-import { addMember, getMembers } from "./members.api";
 import Toast from "../../utils/toast";
+import { addMember, getMembers } from "./members.api";
 
 const UserMembers = () => {
     const [visible, setVisible] = useState(false);
@@ -68,7 +68,14 @@ const UserMembers = () => {
         mutation.mutate(memberData);
     };
 
-    // CONDITIONAL RENDERS should be written after all the HOOKS!!!
+    const handleChangePhoneNum = (e: ChangeEvent<HTMLInputElement>) => {
+        setMemberData((prev) => ({
+            ...prev,
+            phoneNumber: e.target.value.replace(/\D/g, "").slice(0, 9),
+        }));
+    };
+
+    //dont read 🥀🥀🥀. CONDITIONAL RENDERS should be written after all the freakin' HOOKS !!!
     if (isLoading) return <h2>Loading members...</h2>;
     if (isError) return <pre>Error: {error.message}</pre>;
 
@@ -85,6 +92,7 @@ const UserMembers = () => {
                         <label className='flex flex-1 flex-col gap-1'>
                             Name:
                             <Input
+                                autoFocus
                                 required
                                 autoComplete='name'
                                 name='name'
@@ -106,15 +114,21 @@ const UserMembers = () => {
                     </div>
 
                     <div className='flex gap-10'>
-                        <label className='flex flex-1 flex-col gap-1'>
+                        <label className='flex flex-col gap-1'>
                             Phone number:
-                            <Input
-                                required
-                                type='tel'
-                                name='phoneNumber'
-                                onChange={handleChange}
-                                value={memberData.phoneNumber}
-                            />
+                            <div className='relative'>
+                                <span className='absolute top-1/2 text-gray-300 -translate-y-1/2 left-2'>
+                                    +998
+                                </span>
+                                <Input
+                                    inputClassName='pl-12 w-[85.5%]'
+                                    required
+                                    type='text'
+                                    name='phoneNumber'
+                                    onChange={handleChangePhoneNum}
+                                    value={memberData.phoneNumber}
+                                />
+                            </div>
                         </label>
 
                         <div className='flex-1'>
