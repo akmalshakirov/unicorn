@@ -21,7 +21,9 @@ const Table = ({ data, columns, actions, maxHeight }: TableProps) => {
                 </thead>
                 <tbody>
                     {data?.map((item, rowIndex) => (
-                        <tr key={item.id ?? rowIndex}>
+                        <tr
+                            key={item.id ?? rowIndex}
+                            className='transition-colors duration-300 hover:bg-primary/47'>
                             {columns.map((col) => (
                                 <td
                                     key={col.key}

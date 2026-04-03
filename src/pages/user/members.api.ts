@@ -5,8 +5,14 @@ interface MembersResponse {
     users: MemberTableProps[];
 }
 
-export const getMembers = async (): Promise<MemberTableProps[]> => {
-    const { data } = await api.get<MembersResponse>("/users");
+export const getMembers = async (
+    page: number,
+    limit: number,
+): Promise<MemberTableProps[]> => {
+    const skip = (page - 1) * limit;
+    const { data } = await api.get<MembersResponse>(
+        `/users?limit=${limit}&skip=${skip}`,
+    );
     return data.users;
 };
 

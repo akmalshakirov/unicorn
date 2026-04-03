@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Filter, Plus } from "lucide-react";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { ChevronLeft, ChevronRight, Filter, Plus } from "lucide-react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import Input from "../../components/ui/Input";
 import Modal from "../../components/ui/Modal";
 import Table from "../../components/ui/Table";
@@ -19,15 +19,28 @@ const UserMembers = () => {
         phoneNumber: "",
     });
 
+    const [page, setPage] = useState(1);
+    const limit = 10;
+
     const [searchQuery, setSearchQuery] = useState("");
 
     const queryClient = useQueryClient();
 
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["members"],
-        queryFn: getMembers,
+        queryKey: ["members", page],
+        queryFn: () => getMembers(page, limit),
         staleTime: 1000 * 60 * 2,
     });
+    const totalPages = Math.ceil(data?.length || 0 / limit);
+
+    useEffect(() => {
+        if (page < totalPages) {
+            queryClient.prefetchQuery({
+                queryKey: ["members", page + 1],
+                queryFn: () => getMembers(page + 1, limit),
+            });
+        }
+    }, [page, totalPages]);
 
     const mutation = useMutation({
         mutationFn: addMember,
@@ -80,7 +93,7 @@ const UserMembers = () => {
     if (isError) return <pre>Error: {error.message}</pre>;
 
     return (
-        <div className='overflow-auto max-w-full p-1'>
+        <>
             <Modal
                 showDefaultFooter
                 open={visible}
@@ -104,6 +117,7 @@ const UserMembers = () => {
                         <label className='flex flex-1 flex-col gap-1'>
                             Date of birth:
                             <Input
+                                max={new Date().getDay()}
                                 required
                                 type='date'
                                 name='date'
@@ -121,6 +135,7 @@ const UserMembers = () => {
                                     +998
                                 </span>
                                 <Input
+                                    placeholder='99-999-99-99'
                                     inputClassName='pl-12 w-[85.5%]'
                                     required
                                     type='text'
@@ -166,55 +181,74 @@ const UserMembers = () => {
                         <button
                             type='reset'
                             onClick={() => setVisible(false)}
-                            className='py-1 px-4 rounded-xl mr-2 border border-gray-500/67'>
+                            className='py-1 px-4 rounded-xl mr-2 border hover:bg-white/10 transition border-gray-500/67'>
                             Cancel
                         </button>
 
                         <button
+                            disabled={mutation.isPending}
                             type='submit'
-                            className='py-1 px-4 bg-stroke focus-visible:bg-stroke/10 transition rounded-xl active:translate-y-1'>
+                            className='py-1 px-4 bg-stroke/50 hover:bg-stroke/67 focus-visible:bg-stroke/10 transition rounded-xl not-disabled:active:translate-y-0.5'>
                             {mutation.isPending ? "Creating..." : "Create"}
                         </button>
                     </div>
                 </form>
             </Modal>
+            <div className='overflow-auto max-w-full p-1'>
+                <div className='mb-7 flex items-center justify-between'>
+                    <Input
+                        name='query'
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder='Search Members'
+                        leftIcon
+                        inputClassName='focus:bg-stroke/14'
+                    />
 
-            <div className='mb-7 flex items-center justify-between'>
-                <Input
-                    name='query'
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder='Search Members'
-                    leftIcon
-                    inputClassName='focus:bg-stroke/5'
+                    <div className='flex items-center gap-2'>
+                        <button className='rounded-2xl hover:bg-stroke/20 ring-2 ring-transparent border-transparent hover:ring-stroke/67 active:translate-y-0.5 active:bg-stroke/30 px-3 py-2 transition bg-secondary flex items-center gap-2 text-white duration-75'>
+                            <Filter size={20} />
+                            Filter
+                        </button>
+
+                        <button
+                            className='rounded-2xl hover:bg-stroke/20 ring-2 ring-transparent border-transparent hover:ring-stroke/67 active:translate-y-0.5 active:bg-stroke/30 px-3 py-2 transition bg-secondary flex items-center gap-2 text-white duration-75'
+                            onClick={() => setVisible(true)}>
+                            <Plus />
+                            Add new
+                        </button>
+                    </div>
+                </div>
+                <Table
+                    data={data}
+                    actions={{
+                        delete: true,
+                        info: true,
+                        update: true,
+                    }}
+                    columns={MEMBERS_TABLE_COLUMNS}
+                    maxHeight='75vh'
                 />
-
-                <div className='flex items-center gap-2'>
-                    <button className='rounded-2xl hover:bg-stroke/20 ring-2 ring-transparent border-transparent hover:ring-stroke/67 active:translate-y-0.5 active:bg-stroke/30 px-3 py-2 transition bg-secondary flex items-center gap-2 text-white duration-75'>
-                        <Filter size={20} />
-                        Filter
+                <div className='flex items-center justify-end gap-4 mt-5'>
+                    <button
+                        className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
+                        disabled={page === 1}
+                        onClick={() => setPage((p) => p - 1)}>
+                        <ChevronLeft size={18} />
                     </button>
+                    <span>
+                        {page} / {totalPages}
+                    </span>
 
                     <button
-                        className='rounded-2xl hover:bg-stroke/20 ring-2 ring-transparent border-transparent hover:ring-stroke/67 active:translate-y-0.5 active:bg-stroke/30 px-3 py-2 transition bg-secondary flex items-center gap-2 text-white duration-75'
-                        onClick={() => setVisible(true)}>
-                        <Plus />
-                        Add new
+                        className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
+                        disabled={page === totalPages}
+                        onClick={() => setPage((p) => p + 1)}>
+                        <ChevronRight size={18} />
                     </button>
                 </div>
             </div>
-
-            <Table
-                data={data}
-                actions={{
-                    delete: true,
-                    info: true,
-                    update: true,
-                }}
-                columns={MEMBERS_TABLE_COLUMNS}
-                maxHeight='75vh'
-            />
-        </div>
+        </>
     );
 };
 
