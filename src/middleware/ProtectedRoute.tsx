@@ -22,10 +22,8 @@ const ProtectedRoute = () => {
             });
         } catch (error) {
             if (isAxiosError(error)) {
-                if (error.status == 401) {
-                    navigate("/login", { replace: true });
-                    localStorage.clear();
-                }
+                navigate("/login", { replace: true });
+                localStorage.clear();
             }
         } finally {
             setLoading(false);
