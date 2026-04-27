@@ -83,7 +83,7 @@ const Input = ({
                 />
 
                 {focusable && showPlaceholder && (
-                    <span className='absolute top-1/2 -translate-y-1/2 right-7 rounded-md bg-stroke/30 px-2 py-0.5 font-bold text-white/67 pointer-events-none'>
+                    <span className='absolute top-1/2 -translate-y-1/2 right-5 rounded-md bg-stroke/30 px-2 py-0.5 font-bold text-white/67 pointer-events-none'>
                         /
                     </span>
                 )}
