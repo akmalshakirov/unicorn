@@ -239,27 +239,26 @@ const UserMembers = () => {
                         maxHeight='75vh'
                     />
                 )}
-                {data?.total !== 0 ||
-                    (data.users.length !== 0 && (
-                        <div className='flex items-center justify-end gap-4 mt-5'>
-                            <button
-                                className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
-                                disabled={page === 1}
-                                onClick={() => setPage((p) => p - 1)}>
-                                <ChevronLeft size={18} />
-                            </button>
-                            <span>
-                                {page} / {totalPages}
-                            </span>
+                {data?.total !== 0 && !isFetching && (
+                    <div className='flex items-center justify-end gap-4 mt-5'>
+                        <button
+                            className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
+                            disabled={page === 1}
+                            onClick={() => setPage((p) => p - 1)}>
+                            <ChevronLeft size={18} />
+                        </button>
+                        <span>
+                            {page} / {totalPages}
+                        </span>
 
-                            <button
-                                className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
-                                disabled={page === totalPages}
-                                onClick={() => setPage((p) => p + 1)}>
-                                <ChevronRight size={18} />
-                            </button>
-                        </div>
-                    ))}
+                        <button
+                            className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
+                            disabled={page === totalPages}
+                            onClick={() => setPage((p) => p + 1)}>
+                            <ChevronRight size={18} />
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     );
