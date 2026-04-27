@@ -50,6 +50,7 @@ export type InputProps = Omit<
     inputClassName?: string;
     leftIcon?: boolean | ReactElement;
     label?: string;
+    focusable?: boolean;
 };
 
 export type MemberDataProps = {

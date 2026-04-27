@@ -1,16 +1,17 @@
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-// const debouncedSearch = (value: string) => {
-//     const [search, setSearch] = useState<string>(value);
-//     const [debouncedSearch, setDebouncedSearch] = useState(search);
+const useDebouncedSearch = (value: string, delay: number = 400) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
-//     useEffect(() => {
-//         const timer = setTimeout(() => {
-//             setDebouncedSearch(search);
-//         }, 400);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
 
-//         return () => clearTimeout(timer);
-//     }, [search]);
-// };
+        return () => clearTimeout(timer);
+    }, [value, delay]);
 
-// export default debouncedSearch;
+    return debouncedValue;
+};
+
+export default useDebouncedSearch;

@@ -8,6 +8,7 @@ import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
 import type { MemberDataProps } from "../../types";
 import Toast from "../../utils/toast";
 import { addMember, getMembers } from "./members.api";
+import debouncedSearch from "../../utils/useDebounce";
 
 const UserMembers = () => {
     const [visible, setVisible] = useState(false);
@@ -20,12 +21,15 @@ const UserMembers = () => {
     const [page, setPage] = useState<number>(1);
     const limit: number = 10;
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const debouncedSearchQuery = debouncedSearch(searchQuery, 555);
     const queryClient = useQueryClient();
     const { data, isError, error, isFetching } = useQuery({
-        queryKey: ["members", page, searchQuery],
-        queryFn: () => getMembers(page, limit, searchQuery),
+        queryKey: ["members", page, debouncedSearchQuery],
+        queryFn: () => getMembers(page, limit, debouncedSearchQuery),
         staleTime: 1000 * 60 * 5,
     });
+
+    console.log(searchQuery);
 
     const totalPages = Math.ceil((data?.total || 0) / limit);
 
@@ -34,8 +38,9 @@ const UserMembers = () => {
 
         if (page < totalPages) {
             queryClient.prefetchQuery({
-                queryKey: ["members", page + 1, searchQuery, limit],
-                queryFn: () => getMembers(page + 1, limit, searchQuery),
+                queryKey: ["members", page + 1, debouncedSearchQuery, limit],
+                queryFn: () =>
+                    getMembers(page + 1, limit, debouncedSearchQuery),
             });
         }
     }, [page, totalPages, searchQuery, limit, queryClient, data]);
@@ -200,6 +205,7 @@ const UserMembers = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder='Search Members'
                         leftIcon
+                        focusable
                         inputClassName='focus:bg-stroke/14'
                     />
 
@@ -219,7 +225,7 @@ const UserMembers = () => {
                 </div>
                 {isFetching ? (
                     <h2>Loading members...</h2>
-                ) : data?.total == 0 ? (
+                ) : data?.total == 0 || isFetching ? (
                     <p>No memebers found</p>
                 ) : (
                     <Table
@@ -233,26 +239,27 @@ const UserMembers = () => {
                         maxHeight='75vh'
                     />
                 )}
-                {data?.total !== 0 && (
-                    <div className='flex items-center justify-end gap-4 mt-5'>
-                        <button
-                            className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
-                            disabled={page === 1}
-                            onClick={() => setPage((p) => p - 1)}>
-                            <ChevronLeft size={18} />
-                        </button>
-                        <span>
-                            {page} / {totalPages}
-                        </span>
+                {data?.total !== 0 ||
+                    (data.users.length !== 0 && (
+                        <div className='flex items-center justify-end gap-4 mt-5'>
+                            <button
+                                className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
+                                disabled={page === 1}
+                                onClick={() => setPage((p) => p - 1)}>
+                                <ChevronLeft size={18} />
+                            </button>
+                            <span>
+                                {page} / {totalPages}
+                            </span>
 
-                        <button
-                            className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
-                            disabled={page === totalPages}
-                            onClick={() => setPage((p) => p + 1)}>
-                            <ChevronRight size={18} />
-                        </button>
-                    </div>
-                )}
+                            <button
+                                className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
+                                disabled={page === totalPages}
+                                onClick={() => setPage((p) => p + 1)}>
+                                <ChevronRight size={18} />
+                            </button>
+                        </div>
+                    ))}
             </div>
         </>
     );
