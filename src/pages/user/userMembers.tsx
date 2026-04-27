@@ -11,36 +11,34 @@ import { addMember, getMembers } from "./members.api";
 
 const UserMembers = () => {
     const [visible, setVisible] = useState(false);
-
     const [memberData, setMemberData] = useState<MemberDataProps>({
         date: "",
         gender: "male",
         name: "",
         phoneNumber: "",
     });
-
-    const [page, setPage] = useState(1);
-    const limit = 10;
-
-    const [searchQuery, setSearchQuery] = useState("");
-
+    const [page, setPage] = useState<number>(1);
+    const limit: number = 10;
+    const [searchQuery, setSearchQuery] = useState<string>("");
     const queryClient = useQueryClient();
-
-    const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["members", page],
-        queryFn: () => getMembers(page, limit),
-        staleTime: 1000 * 60 * 2,
+    const { data, isError, error, isFetching } = useQuery({
+        queryKey: ["members", page, searchQuery],
+        queryFn: () => getMembers(page, limit, searchQuery),
+        staleTime: 1000 * 60 * 5,
     });
-    const totalPages = Math.ceil(data?.length || 0 / limit);
+
+    const totalPages = Math.ceil((data?.total || 0) / limit);
 
     useEffect(() => {
+        if (!data) return;
+
         if (page < totalPages) {
             queryClient.prefetchQuery({
-                queryKey: ["members", page + 1],
-                queryFn: () => getMembers(page + 1, limit),
+                queryKey: ["members", page + 1, searchQuery, limit],
+                queryFn: () => getMembers(page + 1, limit, searchQuery),
             });
         }
-    }, [page, totalPages]);
+    }, [page, totalPages, searchQuery, limit, queryClient, data]);
 
     const mutation = useMutation({
         mutationFn: addMember,
@@ -89,7 +87,7 @@ const UserMembers = () => {
     };
 
     //dont read 🥀🥀🥀. CONDITIONAL RENDERS should be written after all the freakin' HOOKS !!!
-    if (isLoading) return <h2>Loading members...</h2>;
+    // if (isLoading) return <h2>Loading members...</h2>;
     if (isError) return <pre>Error: {error.message}</pre>;
 
     return (
@@ -219,34 +217,42 @@ const UserMembers = () => {
                         </button>
                     </div>
                 </div>
-                <Table
-                    data={data}
-                    actions={{
-                        delete: true,
-                        info: true,
-                        update: true,
-                    }}
-                    columns={MEMBERS_TABLE_COLUMNS}
-                    maxHeight='75vh'
-                />
-                <div className='flex items-center justify-end gap-4 mt-5'>
-                    <button
-                        className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
-                        disabled={page === 1}
-                        onClick={() => setPage((p) => p - 1)}>
-                        <ChevronLeft size={18} />
-                    </button>
-                    <span>
-                        {page} / {totalPages}
-                    </span>
+                {isFetching ? (
+                    <h2>Loading members...</h2>
+                ) : data?.total == 0 ? (
+                    <p>No memebers found</p>
+                ) : (
+                    <Table
+                        data={data?.users || []}
+                        actions={{
+                            delete: true,
+                            info: true,
+                            update: true,
+                        }}
+                        columns={MEMBERS_TABLE_COLUMNS}
+                        maxHeight='75vh'
+                    />
+                )}
+                {data?.total !== 0 && (
+                    <div className='flex items-center justify-end gap-4 mt-5'>
+                        <button
+                            className='disabled:opacity-50 border border-stroke bg-primary rounded-full p-1'
+                            disabled={page === 1}
+                            onClick={() => setPage((p) => p - 1)}>
+                            <ChevronLeft size={18} />
+                        </button>
+                        <span>
+                            {page} / {totalPages}
+                        </span>
 
-                    <button
-                        className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
-                        disabled={page === totalPages}
-                        onClick={() => setPage((p) => p + 1)}>
-                        <ChevronRight size={18} />
-                    </button>
-                </div>
+                        <button
+                            className='disabled:opacity-50 border border-stroke bg-secondary rounded-full p-1'
+                            disabled={page === totalPages}
+                            onClick={() => setPage((p) => p + 1)}>
+                            <ChevronRight size={18} />
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     );

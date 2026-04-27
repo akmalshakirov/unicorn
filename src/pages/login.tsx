@@ -104,6 +104,8 @@ const LoginPage = () => {
                         type='password'
                         label='Password:'
                         name='password'
+                        title='Enter your password'
+                        aria-label='Enter your password'
                         value={data.password}
                         onChange={handleChange}
                         inputClassName='bg-[#3c3e47] focus:bg-[#4b4c54] w-full'

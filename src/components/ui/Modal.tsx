@@ -15,7 +15,6 @@ const Modal = ({
         if (!open) return;
 
         document.body.style.overflow = "hidden";
-        document.body.style.paddingRight = "15px";
 
         const handleEsc = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -25,7 +24,6 @@ const Modal = ({
 
         return () => {
             document.body.style.overflow = "";
-            document.body.style.paddingRight = "";
             window.removeEventListener("keydown", handleEsc);
         };
     }, [open, onClose]);

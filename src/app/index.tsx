@@ -5,6 +5,7 @@ import LoginPage from "../pages/login";
 import NotFoundPage from "../pages/NotFound";
 import UserHome from "../pages/user/userHome";
 import UserMembers from "../pages/user/userMembers";
+import UserPOS from "../pages/user/userPOS";
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
@@ -27,6 +28,14 @@ const App = () => {
                     element={
                         <Layout>
                             <UserMembers />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path='/pos'
+                    element={
+                        <Layout>
+                            <UserPOS />
                         </Layout>
                     }
                 />

@@ -3,19 +3,24 @@ import type { MemberDataProps, MemberTableProps } from "../../types";
 
 interface MembersResponse {
     users: MemberTableProps[];
+    total: number;
 }
 
 export const getMembers = async (
     page: number,
     limit: number,
-): Promise<MemberTableProps[]> => {
+    searchQuery?: string,
+): Promise<MembersResponse> => {
     const skip = (page - 1) * limit;
-    const { data } = await api.get<MembersResponse>(
-        `/users?limit=${limit}&skip=${skip}`,
-    );
-    return data.users;
-};
 
+    const url = searchQuery
+        ? `/users/search?q=${searchQuery}&limit=${limit}&skip=${skip}`
+        : `/users?limit=${limit}&skip=${skip}`;
+
+    const { data } = await api.get<MembersResponse>(url);
+
+    return data;
+};
 export const addMember = async ({
     date,
     gender,
