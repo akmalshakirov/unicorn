@@ -5,10 +5,11 @@ import Input from "../../components/ui/Input";
 import Modal from "../../components/ui/Modal";
 import Table from "../../components/ui/Table";
 import { MEMBERS_TABLE_COLUMNS } from "../../constants/data";
-import type { MemberDataProps } from "../../types";
+import type { MemberDataProps, TMembersUserModal } from "../../types";
 import Toast from "../../utils/toast";
-import { addMember, getMembers } from "./members.api";
 import debouncedSearch from "../../utils/useDebounce";
+import { addMember, getMembers } from "./members.api";
+import MembersUserInfoModal from "../../utils/membersUserInfoModal";
 
 const UserMembers = () => {
     const [visible, setVisible] = useState(false);
@@ -28,8 +29,11 @@ const UserMembers = () => {
         queryFn: () => getMembers(page, limit, debouncedSearchQuery),
         staleTime: 1000 * 60 * 5,
     });
-
-    console.log(searchQuery);
+    const [action, setAction] = useState<TMembersUserModal>({
+        id: 0,
+        onClose: () => {},
+        open: false,
+    });
 
     const totalPages = Math.ceil((data?.total || 0) / limit);
 
@@ -43,7 +47,7 @@ const UserMembers = () => {
                     getMembers(page + 1, limit, debouncedSearchQuery),
             });
         }
-    }, [page, totalPages, searchQuery, limit, queryClient, data]);
+    }, [page, totalPages, debouncedSearchQuery, limit, queryClient, data]);
 
     const mutation = useMutation({
         mutationFn: addMember,
@@ -197,6 +201,11 @@ const UserMembers = () => {
                     </div>
                 </form>
             </Modal>
+            <MembersUserInfoModal
+                id={action.id}
+                onClose={action.onClose}
+                open={action.open}
+            />
             <div className='overflow-auto max-w-full p-1'>
                 <div className='mb-7 flex items-center justify-between'>
                     <Input
@@ -237,6 +246,25 @@ const UserMembers = () => {
                         }}
                         columns={MEMBERS_TABLE_COLUMNS}
                         maxHeight='75vh'
+                        functions={{
+                            info(id) {
+                                setAction({
+                                    id,
+                                    onClose: () =>
+                                        setAction((prev) => ({
+                                            ...prev,
+                                            open: false,
+                                        })),
+                                    open: true,
+                                });
+                            },
+                            update(id) {
+                                console.log(`update id IS ${id}`);
+                            },
+                            delete(id) {
+                                console.log(`delete id IS ${id}`);
+                            },
+                        }}
                     />
                 )}
                 {data?.total !== 0 && !isFetching && (

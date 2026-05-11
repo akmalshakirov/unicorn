@@ -1,7 +1,13 @@
 import { LogIn, SquarePen, Trash } from "lucide-react";
 import type { TableProps } from "../../types";
 
-const Table = ({ data, columns, actions, maxHeight }: TableProps) => {
+const Table = ({
+    data,
+    columns,
+    actions,
+    maxHeight,
+    functions,
+}: TableProps) => {
     return (
         <div
             className={`bg-secondary w-full rounded-3xl p-4 overflow-auto h-[${maxHeight}]`}>
@@ -34,17 +40,29 @@ const Table = ({ data, columns, actions, maxHeight }: TableProps) => {
                             {actions && (
                                 <td className='text-center space-x-3 text-nowrap'>
                                     {actions.info && (
-                                        <button className='*:stroke-stroke cursor-pointer'>
+                                        <button
+                                            className='*:stroke-stroke cursor-pointer'
+                                            onClick={() =>
+                                                functions.info(item.id)
+                                            }>
                                             <LogIn size={20} />
                                         </button>
                                     )}
                                     {actions.update && (
-                                        <button className='*:stroke-stroke cursor-pointer'>
+                                        <button
+                                            className='*:stroke-stroke cursor-pointer'
+                                            onClick={() =>
+                                                functions.update(item.id)
+                                            }>
                                             <SquarePen size={20} />
                                         </button>
                                     )}
                                     {actions.delete && (
-                                        <button className='*:stroke-stroke cursor-pointer'>
+                                        <button
+                                            className='*:stroke-stroke cursor-pointer'
+                                            onClick={() =>
+                                                functions.delete(item.id)
+                                            }>
                                             <Trash size={20} />
                                         </button>
                                     )}

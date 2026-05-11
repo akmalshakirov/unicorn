@@ -51,7 +51,7 @@ const Input = ({
     const showPlaceholder = !value && placeholder;
 
     return (
-        <div className={`relative ${className ?? ""}`}>
+        <div className={`${className ?? ""}`}>
             {label && (
                 <label htmlFor={id ?? name} className='block mb-2'>
                     {label}

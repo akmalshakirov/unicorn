@@ -6,6 +6,11 @@ export type TableProps = {
     columns: MemberTableColumns[];
     actions: MemberTableActions;
     maxHeight?: string;
+    functions: {
+        info: (id: number) => void;
+        update: (id: number) => void;
+        delete: (id: number) => void;
+    };
 };
 
 export type MemberTableProps = {
@@ -58,4 +63,10 @@ export type MemberDataProps = {
     date: string;
     phoneNumber: string;
     gender: "male" | "female";
+};
+
+export type TMembersUserModal = {
+    id: number;
+    open: boolean;
+    onClose: () => void;
 };

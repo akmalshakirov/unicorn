@@ -47,7 +47,7 @@ class ErrorBoundary extends Component<Props, State> {
     render() {
         if (this.state.hasError) {
             return (
-                <div className='flex min-h-screen items-center justify-center bg-primary px-4'>
+                <div className='flex min-h-screen items-center justify-center bg-primary px-4 py-20'>
                     <div className='w-full max-w-2xl rounded-xl bg-secondary p-8 shadow-lg'>
                         <div className='text-center'>
                             <div className='text-5xl mb-4'>⚠️</div>
@@ -76,8 +76,8 @@ class ErrorBoundary extends Component<Props, State> {
                             </div>
                         </div>
 
-                        <details className='mt-6 rounded-md bg-gray-50 p-4 text-sm text-left'>
-                            <summary className='cursor-pointer font-medium text-black'>
+                        <details className='mt-6 rounded-md bg-black/27 hover:bg-primary transition p-4 text-sm text-left'>
+                            <summary className='cursor-pointer font-medium text-white'>
                                 Error details
                             </summary>
 
