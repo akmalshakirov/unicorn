@@ -8,7 +8,6 @@ export type TableProps = {
     maxHeight?: string;
     functions: {
         info: (id: number) => void;
-        update: (id: number) => void;
         delete: (id: number) => void;
     };
 };

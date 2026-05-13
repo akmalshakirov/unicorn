@@ -1,4 +1,4 @@
-import { LogIn, SquarePen, Trash } from "lucide-react";
+import { SquarePen, Trash } from "lucide-react";
 import type { TableProps } from "../../types";
 
 const Table = ({
@@ -44,15 +44,6 @@ const Table = ({
                                             className='*:stroke-stroke cursor-pointer'
                                             onClick={() =>
                                                 functions.info(item.id)
-                                            }>
-                                            <LogIn size={20} />
-                                        </button>
-                                    )}
-                                    {actions.update && (
-                                        <button
-                                            className='*:stroke-stroke cursor-pointer'
-                                            onClick={() =>
-                                                functions.update(item.id)
                                             }>
                                             <SquarePen size={20} />
                                         </button>

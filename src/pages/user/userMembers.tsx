@@ -74,6 +74,18 @@ const UserMembers = () => {
         },
     });
 
+    const updateFunction = (id: number) => {
+        setAction({
+            id,
+            onClose: () =>
+                setAction((prev) => ({
+                    ...prev,
+                    open: false,
+                })),
+            open: true,
+        });
+    };
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
 
@@ -242,24 +254,12 @@ const UserMembers = () => {
                         actions={{
                             delete: true,
                             info: true,
-                            update: true,
                         }}
                         columns={MEMBERS_TABLE_COLUMNS}
                         maxHeight='75vh'
                         functions={{
                             info(id) {
-                                setAction({
-                                    id,
-                                    onClose: () =>
-                                        setAction((prev) => ({
-                                            ...prev,
-                                            open: false,
-                                        })),
-                                    open: true,
-                                });
-                            },
-                            update(id) {
-                                console.log(`update id IS ${id}`);
+                                updateFunction(id);
                             },
                             delete(id) {
                                 console.log(`delete id IS ${id}`);
